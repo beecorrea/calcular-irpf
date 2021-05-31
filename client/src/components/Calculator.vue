@@ -1,49 +1,50 @@
 <template>
   <div>
-    <Card>
-      <template v-slot:content>
-        <form action="" method="post">
-          <div id="calculator">
-            <div class="data-input">
-              <label for="base">Base salary</label>
-              <input
-                type="text"
-                name="base-salary"
-                id="base"
-                v-model="baseSal"
-                pattern="[0-9]+.[0-9]{2}"
-                placeholder="5000.00"
-              />
-            </div>
-            <div class="data-input">
-              <label for="dependents">Dependents</label>
-              <input
-                type="text"
-                name="dependents"
-                id="dependents"
-                v-model="dependents"
-                pattern="[0-9]+"
-                placeholder="2"
-              />
-            </div>
-            <div class="data-input">
-              <label for="others">Other discounts</label>
-              <input
-                type="text"
-                name="other-discounts"
-                id="others"
-                v-model="others"
-                pattern="[0-9]+.[0-9]{2}"
-                placeholder="45.22"
-              />
-            </div>
-          </div>
-          <button type="submit" @click.prevent="calculate">Calculate</button>
-        </form>
-      </template>
-    </Card>
-    <hr />
-    <total-amount :value="result" id="amt-section" v-if="result != null" />
+    <form method="post">
+      <div id="calculator">
+        <div class="data-input">
+          <label for="base">Base salary</label>
+          <input
+            type="text"
+            name="base-salary"
+            id="base"
+            v-model="baseSal"
+            pattern="[0-9]+.[0-9]{2}"
+            placeholder="5000.00"
+          />
+        </div>
+        <div class="data-input">
+          <label for="dependents">Dependents</label>
+          <input
+            type="text"
+            name="dependents"
+            id="dependents"
+            v-model="dependents"
+            pattern="[0-9]+"
+            placeholder="2"
+          />
+        </div>
+        <div class="data-input">
+          <label for="others">Other discounts</label>
+          <input
+            type="text"
+            name="other-discounts"
+            id="others"
+            v-model="others"
+            pattern="[0-9]+.[0-9]{2}"
+            placeholder="45.22"
+          />
+        </div>
+        <button type="submit" @click.prevent="calculate">Calculate</button>
+      </div>
+    </form>
+    <!-- <hr /> -->
+    <div id="amt-section">
+      <h2 id="total-amt">Total amount</h2>
+      <transition name="fade-slide-in" mode="out-in">
+        <total-amount :value="result" v-if="result != null" :key="Date.now()" />
+      </transition>
+    </div>
   </div>
 </template>
 
@@ -98,57 +99,84 @@ label {
 #calculator {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
-  align-items: flex-start;
-  height: 290px;
-  width: 500px;
-  padding: 18px 18px 2px 18px;
-}
-
-.data-input {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
   justify-content: space-between;
-  box-sizing: border-box;
-  text-align: left;
+  align-items: flex-start;
+  height: 440px;
+  padding: 18px 18px 2px 0px;
 }
 
-#calculator ~ button[type='submit'] {
-  margin: 1rem 0;
-  width: 500px;
-  padding: 1.2rem;
+.data-input > label {
+  display: block;
+  text-align: left;
+  font-size: 1.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.data-input > input[type='text'] {
+  padding: 0.5rem 0.9rem;
+  margin-left: 0.9ch;
+  width: 300px;
+  height: 1.75rem;
+  border: 0;
+  border-bottom: 4px solid #055c9ddd;
+  border-radius: 0.175rem 0.175rem 0 0;
+  background-color: #e7e7e7;
+  /* color: #e8eef1; */
+  font-weight: 900;
+}
+
+#calculator > button[type='submit'] {
+  margin-top: 3rem;
+  margin-left: 0.8ch;
+  padding: 1rem;
   border: 0;
   border-radius: 0.175rem;
   background-color: #057dcd;
   font-weight: 900;
   font-size: 1rem;
   color: #f0f0f0;
-  letter-spacing: 0.5ch;
+  letter-spacing: 0.425ch;
   text-transform: uppercase;
   font-family: 'Inter', Helvetica, sans-serif;
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
-.data-input > input[type='text'] {
-  padding: 0.5rem 0.9rem;
-  border: 0;
-  border-bottom: 4px solid #055c9ddd;
-  border-radius: 0.175rem 0.175rem 0 0;
-  background-color: #055c9daa;
-  /* color: #e8eef1; */
-  font-weight: 900;
+#calculator > button[type='submit']:hover {
+  background-color: #057dcddd;
+  color: #e7e7e7;
 }
 
 #amt-section {
   text-align: left;
-  /* margin-top: 4rem; */
+  margin: 0;
+  margin-top: 3.75rem;
+  margin-bottom: 2rem;
+  margin-left: 6px;
 }
 
 hr {
   max-width: 560px;
-  margin: 0;
-  margin-top: 4rem;
-  margin-bottom: 3rem;
+
   border-color: #055c9d22;
+}
+
+#total-amt {
+  font-size: 1.35rem;
+  font-weight: bold;
+  letter-spacing: 0.0375ch;
+}
+
+.fade-slide-in-enter-active {
+  transition: all 0.25s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.fade-slide-in-leave-active {
+  transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.fade-slide-in-enter-from,
+.fade-slide-in-leave-to {
+  transform: translateX(-20px);
+  opacity: 0;
 }
 </style>
